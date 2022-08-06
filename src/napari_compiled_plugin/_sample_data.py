@@ -1,21 +1,19 @@
-"""
-This module is an example of a barebones sample data provider for napari.
+from typing import TYPE_CHECKING
 
-It implements the "sample data" specification.
-see: https://napari.org/stable/plugins/guides.html?#sample-data
-
-Replace code below according to your needs.
-"""
-from __future__ import annotations
-
-import numpy
+if TYPE_CHECKING:
+    from npe2 import implements
+else:
+    D = type("D", (), {"__getattr__": lambda *_: (lambda **_: (lambda f: f))})
+    implements = D()
 
 
+@implements.sample_data_generator(
+    id="make_sample_data",
+    title="Load sample data from Compiled Example",
+    display_name='Compiled Example',
+    key='unique_id.1'
+)
 def make_sample_data():
-    """Generates an image"""
-    # Return list of tuples
-    # [(data1, add_image_kwargs1), (data2, add_image_kwargs2)]
-    # Check the documentation for more information about the
-    # add_image_kwargs
-    # https://napari.org/stable/api/napari.Viewer.html#napari.Viewer.add_image
+    import numpy
+
     return [(numpy.random.rand(512, 512), {})]
